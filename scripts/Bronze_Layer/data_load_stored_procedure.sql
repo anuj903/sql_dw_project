@@ -1,5 +1,8 @@
+EXEC bronze.load_bronze
+
 CREATE OR ALTER PROCEDURE bronze.load_bronze AS
 BEGIN
+	DECLARE @start_time	DATETIME, @end_time DATETIME	
 	BEGIN TRY
 		PRINT '===============================================';
 		PRINT 'Loading Bronze Layer';
@@ -10,6 +13,7 @@ BEGIN
 		PRINT '-----------------------------------------------';
 
 		--1
+		SET @start_time = GETDATE();
 		PRINT '>> Truncating table: bronze.crm_cust_info';
 		TRUNCATE TABLE bronze.crm_cust_info;
 
@@ -21,8 +25,12 @@ BEGIN
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
+		SET @end_time = GETDATE();
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + 'Seconds';
+
 
 		--2
+		SET @start_time = GETDATE();
 		PRINT '>> Truncating table: bronze.crm_prd_info';
 		TRUNCATE TABLE bronze.crm_prd_info;
 		PRINT '>> Inserting Data Into : bronze.crm_prd_info';
@@ -33,8 +41,12 @@ BEGIN
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
+		SET @end_time = GETDATE();
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + 'Seconds';
+
 
 		--3
+		SET @start_time = GETDATE();
 		PRINT '>> Truncating table: bronze.crm_sales_details';
 		TRUNCATE TABLE bronze.crm_sales_details;
 		PRINT '>> Inserting Data Into : bronze.crm_sales_details';
@@ -45,9 +57,13 @@ BEGIN
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
+		SET @end_time = GETDATE();
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + 'Seconds';
+
 
 
 		--4
+		SET @start_time = GETDATE();
 		PRINT '>> Truncating table: bronze.erp_cust_az12';
 		TRUNCATE TABLE bronze.erp_cust_az12;
 		PRINT '>> Inserting Data Into : bronze.erp_cust_az12';
@@ -58,8 +74,12 @@ BEGIN
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
+		SET @end_time = GETDATE();
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + 'Seconds';
+
 
 		--5
+		SET @start_time = GETDATE();
 		PRINT '>> Truncating table: bronze.erp_loc_a101';
 		TRUNCATE TABLE bronze.erp_loc_a101;
 		PRINT '>> Inserting Data Into : bronze.erp_loc_a101';
@@ -70,8 +90,12 @@ BEGIN
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
+		SET @end_time = GETDATE();
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + 'Seconds';
+
 
 		--6
+		SET @start_time = GETDATE();
 		PRINT '>> Truncating table: bronze.erp_px_cat_g1v2';
 		TRUNCATE TABLE bronze.erp_px_cat_g1v2;
 		PRINT '>> Inserting Data Into : bronze.erp_px_cat_g1v2';
@@ -82,6 +106,9 @@ BEGIN
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
+		SET @end_time = GETDATE();
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + 'Seconds';
+
 	END TRY
 	BEGIN CATCH
 		PRINT '===========================================';
